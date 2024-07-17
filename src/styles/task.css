@@ -1,0 +1,130 @@
+@import 'reset.css';
+.step {
+  display: block;
+  padding: 150px 0;
+}
+.step .container {
+  display: block;
+  width: 100%;
+  max-width: 1030px;
+  padding: 0px 15px;
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+
+.step .container .step_body {
+  border: 1px solid #333;
+  border-radius: 15px;
+  padding: 30px 15px;
+  box-sizing: border-box;
+}
+.step .container .step_body .result {
+  display: block;
+  margin-top: 15px;
+}
+
+.step .container .title {
+  font-size: 38px;
+  font-weight: bold;
+  margin-bottom: 50px;
+}
+.step .container .total_image {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.step .container .image_percent {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+.step .container .image_percent b {
+  display: block;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+.step .container .image_percent input {
+  display: block;
+  border: 1px solid #333;
+  border-radius: 8px;
+  font-size: 14px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+.step .container .image_percent button {
+  display: block;
+  margin-top: 5px;
+  border-radius: 5px;
+  padding: 10px;
+  box-sizing: border-box;
+  font-size: 14px;
+  background: #333;
+  color: #fff;
+}
+
+.step .container .btn_wrap {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 24px;
+}
+.step .container .btn_wrap button {
+  display: block;
+  margin-top: 5px;
+  border-radius: 5px;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  font-size: 14px;
+  background: #333;
+  color: #fff;
+}
+
+.step .step_body b.check_mode_title {
+  margin-bottom: 15px;
+  display: block;
+}
+.step .step_body .check_mode {
+  display: flex;
+  align-items: center;
+  justify-content: normal;
+  gap: 16px;
+}
+.step .step_body input[type='radio'] {
+  position: fixed;
+  left: -9999px;
+}
+.step .step_body input[type='radio'] + label {
+  display: block;
+  padding: 5px 10px;
+  cursor: pointer;
+  border: 1px solid #333;
+}
+.step .step_body input[type='radio']:checked + label {
+  display: block;
+  background: #7300f0;
+  width: fit-content;
+  color: #fff;
+}
+
+.task_mode_content .tmc_title {
+  display: block;
+  margin-top: 35px;
+  font-size: 24px;
+  font-weight: bold;
+}
+.task_mode_content .tmc {
+  display: flex;
+  align-items: center;
+  justify-content: normal;
+  margin-top: 10px;
+}
+.task_mode_content .tmc p {
+}
+.task_mode_content .tmc input {
+  border: 1px solid #333;
+  margin-left: 10px;
+  padding: 10px 5px;
+}
