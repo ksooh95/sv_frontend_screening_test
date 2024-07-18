@@ -20,10 +20,6 @@ const Step2: React.FC<Step2> = ({
   const [localMode, setLocalMode] = useState<'object' | 'task'>('object'); // 모드를 로컬 상태로 관리
   const [localObjectCount, setLocalObjectCount] = useState<number>(0); // Object의 개수를 로컬 상태로 관리
   const [localTaskCount, setLocalTaskCount] = useState<number>(0); // Task의 개수를 로컬 상태로 관리
-
-  console.log(localMode);
-  console.log(localTaskCount);
-  console.log(localObjectCount);
   return (
     <div className="step">
       <div className="container">

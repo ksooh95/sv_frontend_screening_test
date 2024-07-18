@@ -6,7 +6,7 @@ import Step4 from '@/app/components/taskGeneration/step4';
 import React, { useState } from 'react';
 
 const TaskGenerationPage = () => {
-  const [step, setStep] = useState<number>(1); // 단계
+  const [step, setStep] = useState<number>(1); // step 1,2,3,4
   const [distributeImages, setDistributeImages] = useState<number>(0);
   const [mode, setMode] = useState<'object' | 'task'>('object'); // 현재 모드
   const [objectCount, setObjectCount] = useState<number>(0); // Object 모드에서 입력받은 값
@@ -16,16 +16,6 @@ const TaskGenerationPage = () => {
   >([]); // task의 갯수와 작업자들
   const nextStep = () => setStep((prev) => prev + 1);
   const prevStep = () => setStep((prev) => prev - 1);
-
-  console.log('비율계산 이미지 분개 값 :', distributeImages);
-  console.log('모드 :', mode);
-  console.log('task 갯수 :', taskCount);
-  console.log(
-    'tasks:',
-    mode === 'object' ? distributeImages / objectCount : taskCount
-  );
-  console.log('mode:', mode);
-  console.log('objectCount:', objectCount);
   return (
     <div className="home">
       <div className="container">
@@ -52,11 +42,16 @@ const TaskGenerationPage = () => {
             }
             mode={mode}
             objectCount={objectCount}
+            distributeImages={distributeImages}
           />
         )}
 
         {step === 4 && (
-          <Step4 onPrev={prevStep} distribution={taskDistribution} />
+          <Step4
+            onPrev={prevStep}
+            distribution={taskDistribution}
+            mode={mode}
+          />
         )}
       </div>
     </div>

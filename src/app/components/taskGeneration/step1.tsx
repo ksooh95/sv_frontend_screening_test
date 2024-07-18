@@ -28,6 +28,7 @@ const Step1: React.FC<Step1> = ({ onNext, setDistributeImages }) => {
     fetchTotalImages();
   }, []);
 
+
   useEffect(() => {
     const numDistributeImage = Math.floor(
       totalImages?.length * (percent / 100)

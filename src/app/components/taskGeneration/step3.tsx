@@ -5,30 +5,38 @@ import '@/styles/task.css';
 import { MockUser } from '@/app/api/users/route';
 
 interface Step3 {
-  onNext: (distribution: { worker: string; tasks: number }[]) => void; // 작업 분배 결과를 전달하고 다음 단계로 이동하는 함수
-  tasks: number; // 할당할 작업의 총 개수
-  mode: 'object' | 'task'; // 모드 설정 ('object' 또는 'task')
-  objectCount: number; // 각 작업에 포함될 object의 개수 (Object based 모드에서 사용)
+  onNext: (
+    distribution: { worker: string; tasks: number; objectsPerTask: number }[]
+  ) => void; 
+  tasks: number; 
+  mode: 'object' | 'task'; 
+  objectCount: number; 
+  distributeImages: number;
 }
 
-const Step3: React.FC<Step3> = ({ onNext, tasks, mode, objectCount }) => {
+const Step3: React.FC<Step3> = ({
+  onNext,
+  tasks,
+  mode,
+  objectCount,
+  distributeImages,
+}) => {
   const [users, setUsers] = useState<MockUser[]>([]);
-  const [selectedWorkers, setSelectedWorkers] = useState<string[]>([]); // 선택된 작업자 목록 상태
-
+  const [selectedWorkers, setSelectedWorkers] = useState<string[]>([]);
   useEffect(() => {
     const fetchWorkers = async () => {
       try {
-        const res = await axios.get('/api/users'); // API 요청을 통해 작업자 목록을 가져옴
-        setUsers(res.data); // 가져온 작업자 목록을 상태에 저장
+        const res = await axios.get('/api/users');
+        setUsers(res.data); 
       } catch (error) {
-        console.error('Error fetching workers', error); // 에러 발생 시 로그 출력
+        console.error('Error fetching workers', error); 
       }
     };
 
-    fetchWorkers(); // 함수 호출
-  }, []); // 빈 배열을 두 번째 인수로 전달하여 컴포넌트가 마운트될 때만 실행되도록 설정
+    fetchWorkers(); 
+  }, []); 
 
-  console.log('users :', users);
+
 
   const handleWorkerSelect = (worker: string) => {
     setSelectedWorkers((prev) =>
@@ -40,60 +48,70 @@ const Step3: React.FC<Step3> = ({ onNext, tasks, mode, objectCount }) => {
 
   const distributeTasks = () => {
     const workerCount = selectedWorkers.length; // 선택된 작업자 수
-    let taskDistribution;
+    let taskDistribution: {
+      worker: string;
+      tasks: number;
+      objectsPerTask: number;
+      ImagesPerTask: number;
+    }[];
+
+    const totalObjects = tasks * objectCount; // 총 object 개수
+    const objectsPerWorker = Math.floor(totalObjects / workerCount); // 작업자당 할당될 object 수
+    const extraObjects = totalObjects % workerCount; // 남은 object 수
+    const tasksPerWorker = Math.floor(tasks / workerCount); // 작업자당 할당될 작업 수
+    const extraTasks = tasks % workerCount; // 남은 작업 수
+    const imagePerTask = Math.floor(distributeImages / tasks); // 분배율에서 계산된 이미지갯수 / task 갯수
 
     if (mode === 'object') {
       // Object based 모드: 각 작업에 포함될 object의 개수를 기준으로 작업을 생성합니다.
-      const totalObjects = tasks * objectCount; // 총 object 개수
-      const objectPerWorker = Math.floor(totalObjects / workerCount); // 작업자당 할당될 작업 수
-      const extraObject = totalObjects % workerCount; // 남은 작업 수
+
       taskDistribution = selectedWorkers.map((worker, i) => ({
         worker,
-        tasks: objectPerWorker + (i < extraObject ? 1 : 0), // 작업자에게 작업 할당
+        tasks: objectsPerWorker + (i < extraObjects ? 1 : 0), // 작업자에게 할당될 object 수
+        objectsPerTask: objectCount,
       }));
     } else {
       // Task based 모드: 생성할 작업의 개수를 기준으로 작업을 생성합니다.
-      const tasksPerWorker = Math.floor(tasks / workerCount); // 작업자당 할당될 작업 수
-      const totalObjects = tasks * objectCount; // 총 object 개수
-      const objectPerWorker = Math.floor(totalObjects / workerCount); // 작업자당 할당될 작업 수
-      const extraTasks = tasks % workerCount; // 남은 작업 수
+
       taskDistribution = selectedWorkers.map((worker, i) => ({
         worker,
-        tasks: i < extraTasks ? tasksPerWorker + 1 : tasksPerWorker,
-        imagesPerTask: Math.floor(objectPerWorker / tasks),
+        tasks: tasksPerWorker + (i < extraTasks ? 1 : 0),
+        ImagesPerTask: Math.floor(
+          distributeImages / (tasksPerWorker + (i < extraTasks ? 1 : 0))
+        ),
       }));
     }
 
     onNext(taskDistribution); // 작업 분배 결과를 전달하고 다음 단계로 이동
   };
 
-  console.log('user :', users);
   return (
     <div className="step">
       <div className="container">
         <div className="step_body">
           <div className="title">Step 3</div>
-          <b>작업자 분배</b>
+          <b className="step3_title">작업자 분배</b>
           <div>
             <h3>작업자 목록:</h3>
-            <ul>
+            <ul className="worker_list">
               {users.map((worker, i) => {
                 return (
                   <li key={i}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={selectedWorkers.includes(worker.name)}
-                        onChange={() => handleWorkerSelect(worker.name)}
-                      />
-                      {worker.name}
-                    </label>
+                    <input
+                      type="checkbox"
+                      checked={selectedWorkers.includes(worker.name)}
+                      onChange={() => handleWorkerSelect(worker.name)}
+                      id={`worker${i}`}
+                    />
+                    <label htmlFor={`worker${i}`}>{worker.name}</label>
                   </li>
                 );
               })}
             </ul>
           </div>
-          <button onClick={distributeTasks}>작업 분배</button>
+          <button onClick={distributeTasks} className="done_btn">
+            작업 분배
+          </button>
         </div>
       </div>
     </div>
