@@ -60,7 +60,6 @@ const Step1: React.FC<Step1> = ({ onNext, setDistributeImages }) => {
           </div>
         </div>
         <div className="btn_wrap">
-          <button type="button">이전</button>
           <button onClick={onNext}>다음</button>
         </div>
       </div>

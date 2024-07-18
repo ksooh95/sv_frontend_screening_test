@@ -3,6 +3,7 @@ import Step1 from '@/app/components/taskGeneration/step1';
 import Step2 from '@/app/components/taskGeneration/step2';
 import Step3 from '@/app/components/taskGeneration/step3';
 import Step4 from '@/app/components/taskGeneration/step4';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 const TaskGenerationPage = () => {
@@ -16,9 +17,13 @@ const TaskGenerationPage = () => {
   >([]); // task의 갯수와 작업자들
   const nextStep = () => setStep((prev) => prev + 1);
   const prevStep = () => setStep((prev) => prev - 1);
+  const { push } = useRouter();
   return (
     <div className="home">
       <div className="container">
+        <button type="button" onClick={() => push('/')} className="home_btn">
+          홈으로
+        </button>
         {step === 1 && (
           <Step1 onNext={nextStep} setDistributeImages={setDistributeImages} />
         )}

@@ -61,7 +61,7 @@ const Step4: React.FC<Step4> = ({ distribution, onPrev, mode }) => {
         </div>
         <div className="btn_wrap">
           <button type="button" onClick={onPrev}>
-            Previous
+            이전
           </button>
         </div>
       </div>
